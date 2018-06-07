@@ -1,10 +1,15 @@
-from sklearn import datasets
+from sklearn import datasets # import dataset
 import numpy as np
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt # for potentially graphing the plot of the error
 
+# seed for randomness
 np.random.seed(15)
 training_data_size = 1500
+# only prints to 10 decimal places
 np.set_printoptions(formatter={'float': lambda x: "{0:0.10f}".format(x)})
+
+# initializes weights. This could've been done better
+# by saying weights = np.random.randn(weightDimension1, weightDimension2)
 def initialize_weights(x,y):
     weight = []
     for i in range(x):
@@ -14,6 +19,8 @@ def initialize_weights(x,y):
         weight.append(inner)
     return weight
 
+# again this could been done better by saying
+# bias = np.random.randn(biasDimension1, biasDimension2)
 def getBiases(size):
     array = []
     bias = np.random.randn()
@@ -21,18 +28,22 @@ def getBiases(size):
         array.append(bias)
     return array
 
+# sigmoid function: gives curviness and flexibility to our classifier
 def nonlin(x,deriv=False):
     if(deriv==True):
         return x*(1-x)
 
     return 1/(1+np.exp(-x))
 
+# gets inputs returns as 2d array
 def getTestData():
     datal = []
     for i in range(training_data_size):
         datal.append(data[i])
     return datal
 
+# generates to targets for the test. This could've been done more elegeantly
+# my lack of python knowledge back then is showing by examples like these
 def getTestTarget():
     datal = []
     data2 = []
@@ -61,6 +72,7 @@ def getTestTarget():
             data2 += [[0,0,0,0,0,0,0,0,0,1]]
     return data2
 
+# maximum number is what the computer guesses
 def computerGuess(x):
     max_index = 0
     for i in range(9):
@@ -68,6 +80,7 @@ def computerGuess(x):
             max_index = i + 1
     return max_index
         
+# load dataset
 digits = datasets.load_digits()
 data = digits.data
 target = digits.target
@@ -76,18 +89,20 @@ test_data = np.array(getTestData())
 test_target = np.array(getTestTarget())
 
 
-
+# learning rate
 alpha = .005
 
+# weights for the 2 hidden layers and the output layer
 syn0 = np.array(initialize_weights(64, 16))
 syn1 = np.array(initialize_weights(16, 16))
 syn2 = np.array(initialize_weights(16,10))
 
+# biases for the layers
 first_bias = np.array(getBiases(16))
 second_bias = np.array(getBiases(16))
 third_bias = np.array(getBiases(10))
 
-
+#training loop
 def train(x, syn0, syn1, syn2, first_bias, second_bias, third_bias):
     l0 = test_data
     
@@ -133,6 +148,10 @@ for i in range(1796):
     else:
         print(i)
 
+# prints the proportion of correct guesses and total
+# this got over 95% accuracy, however, it was probably most likely due to overfitting.
+# this neural network doesn't include dropout, or relu activation
+# this is a very naive approach for neural networks, but regardless it works
 print(success / 1796)
 
 
