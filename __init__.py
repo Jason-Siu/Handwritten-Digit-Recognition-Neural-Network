@@ -132,10 +132,11 @@ def train(x, syn0, syn1, syn2, first_bias, second_bias, third_bias):
     syn1 += alpha * l1.T.dot(l2_delta)
     syn0 += alpha * l0.T.dot(l1_delta)
     
-
+# training loop
 for i in range(100000):
     train(i, syn0, syn1, syn2, first_bias, second_bias, third_bias)
 
+# testing model
 success = 0
 for i in range(1796):
     l0 = data[i]
@@ -153,38 +154,3 @@ for i in range(1796):
 # this neural network doesn't include dropout, or relu activation
 # this is a very naive approach for neural networks, but regardless it works
 print(success / 1796)
-
-
-
-
-    
-
-
-    
-    
-
-    
-    
-    
-
-
-
-
-    
-    
-
-
-
-
-    
-    
-
-
-
-
-
-
-    
-    
-
-
